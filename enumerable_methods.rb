@@ -97,34 +97,37 @@ module Enumerable
   end
 
   # rubocop:disable Performance/RedundantBlockCall
-  def my_map(&proc)
-    return enum_for(:my_map) unless block_given?
+  def my_map(proc = nil)
+    return enum_for(:my_map) unless block_given? || proc 
 
     new_array = []
-    my_each do |item|
-      new_array << proc.call(item)
-    end
+    if proc.nil?
+      to_a.my_each { |item| new_array << yield(item) }
+    else 
+      to_a.my_each { |item| new_array << proc.call(item) }
+    end  
     new_array
   end
   # rubocop:enable Performance/RedundantBlockCall
 
-  def my_inject(args = nil) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-    reducer = args[0] if args[0].is_a?(Integer)
-
-    if block_given?
-      accumulator = 0
-      my_each { |item| accumulator = yield(accumulator, item) }
+  def my_inject(number = nil, sym = nil) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    arr = self.to_a
+    if number.nil? 
+      accumulator = arr[0]
+      arr[1..-1].my_each { |item| accumulator = yield(accumulator, item) }
       accumulator
-    elsif block_given? && args[0].is_a?(Integer)
-      accumulator = args[0]
-      my_each { |item| accumulator = yield(accumulator, item) }
+    elsif number && sym
+      accumulator = number
+      arr.my_each { |item| accumulator = accumulator.send(sym, item) }
       accumulator
-    elsif args[0].is_a?(Symbol)
-      my_each { |item| reducer = reducer ? reducer.send(args[0], item) : item }
-      reducer
-    elsif args[0] && args[1].is_a?(Symbol)
-      my_each { |item| reducer = reducer ? reducer.send(args[1], item) : item }
-      reducer
+    elsif block_given? && number.is_a?(Integer)
+      accumulator = number
+      arr.my_each { |item| accumulator = yield(accumulator, item) }
+      accumulator
+    else 
+      accumulator = arr[0]
+      arr[1..-1].my_each { |item| accumulator = accumulator.send(number, item) }
+      accumulator  
     end
   end
 end

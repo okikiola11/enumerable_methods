@@ -66,10 +66,14 @@ module Enumerable
     condition = true
     if block_given?
       my_each { |item| condition = false if yield(item) == true }
-    elsif !args.nil?
-      my_each { |item| condition = false if item != args }
+    elsif args.is_a?(Class)
+      my_each { |item| condition = false if item.is_a?(args) }
+    elsif args.is_a?(Regexp)
+      my_each { |item| condition = false if args.match?(item.to_s) }
+    elsif args.nil?
+      my_each { |item| condition = false if item }
     else
-      my_each { |item| condition = true unless item == false }
+      my_each { |item| condition = false if item == args }
     end
     condition
   end

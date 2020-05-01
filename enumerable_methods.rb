@@ -40,8 +40,6 @@ module Enumerable
       my_each { |item| condition = false unless item.is_a?(args) }
     elsif args.is_a?(Regexp)
       my_each { |item| condition = false unless args.match?(item.to_s) }
-    elsif args.is_a?(Range)
-      my_each { |_item| condition = false unless args.include?(args) }
     elsif !args.nil?
       my_each { |item| condition = false if item != args }
     else
@@ -60,8 +58,6 @@ module Enumerable
       my_each { |item| condition = true unless item.is_a?(args) }
     elsif args.is_a?(Regexp)
       my_each { |item| condition = true unless args.match?(item.to_s) }
-    elsif args.is_a?(Range)
-      my_each { |item| condition = true unless item.include?(args) }
     elsif !args.nil?
       my_each { |item| condition = true if item != args }
     else
@@ -110,23 +106,23 @@ module Enumerable
   end
   # rubocop:enable Performance/RedundantBlockCall
 
-  def my_inject(number = nil, sym = nil) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+  def my_inject(initial_arg = nil, sym = nil) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     arr = self.to_a
-    if number.nil? 
+    if initial_arg.nil? 
       accumulator = arr[0]
       arr[1..-1].my_each { |item| accumulator = yield(accumulator, item) }
       accumulator
-    elsif number && sym
-      accumulator = number
+    elsif initial_arg && sym
+      accumulator = initial_arg
       arr.my_each { |item| accumulator = accumulator.send(sym, item) }
       accumulator
-    elsif block_given? && number.is_a?(Integer)
-      accumulator = number
+    elsif block_given? && initial_arg.is_a?(Integer)
+      accumulator = initial_arg
       arr.my_each { |item| accumulator = yield(accumulator, item) }
       accumulator
     else 
       accumulator = arr[0]
-      arr[1..-1].my_each { |item| accumulator = accumulator.send(number, item) }
+      arr[1..-1].my_each { |item| accumulator = accumulator.send(initial_arg, item) }
       accumulator  
     end
   end
@@ -136,3 +132,22 @@ def multiply_els(array)
   array.my_inject(:*)
 end
 # rubocop:enable Metrics/ModuleLength
+
+
+#p [false, true].my_map { |bool| !bool }
+#my_proc = Proc.new {|num| p num > 10 }
+# p [1,2,3,4].my_inject(10) { |accum, elem| accum + elem} 
+# p [1,2,3,4].my_inject { |accum, elem| accum + elem}
+# p [5, 1, 2].my_inject("+") 
+# p (5..10).my_inject(2, :*)
+# p (5..10).my_inject(4) {|prod, n| prod * n}
+
+# p [1,2,3].my_map { |n| 2 * n } # => [2,4,6]
+#  p ["Hey", "Jude"].my_map { |word| word + "?" } # => ["Hey?", "Jude?"]
+#  p [false, true].my_map { |bool| !bool } # => [true, false]
+# my_proc = Proc.new {|num| num > 10 }
+# p (1..3).my_map{|num| num > 10 }
+p [nil, false, nil, false].my_any? # => false
+p [1, nil, false].my_any?(Integer) # => true
+p ['dog', 'door', 'rod', 'bladez'].my_any?(/z/) # => false
+p [1, 2 ,3].my_any?(1) # => true

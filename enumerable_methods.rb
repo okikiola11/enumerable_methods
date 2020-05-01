@@ -37,13 +37,13 @@ module Enumerable
     if block_given?
       my_each { |item| condition = false if yield(item) == false }
     elsif args.is_a?(Class)
-      my_each { |item| condition = false unless item.is_a?(args) }
+      my_each { |item| condition = false if item.is_a?(args) }
     elsif args.is_a?(Regexp)
-      my_each { |item| condition = false unless args.match?(item.to_s) }
+      my_each { |item| condition = false if args.match?(item.to_s) }
     elsif !args.nil?
       my_each { |item| condition = false if item != args }
     else
-      my_each { |item| condition = false unless item }
+      my_each { |item| condition = false if item }
     end
     condition
   end
@@ -55,13 +55,13 @@ module Enumerable
     if block_given?
       my.each { |item| condition = true if yield(item) == true }
     elsif args.is_a?(Class)
-      my_each { |item| condition = true unless item.is_a?(args) }
+      my_each { |item| condition = true if item.is_a?(args) }
     elsif args.is_a?(Regexp)
-      my_each { |item| condition = true unless args.match?(item.to_s) }
-    elsif !args.nil?
-      my_each { |item| condition = true if item != args }
+      my_each { |item| condition = true if args.match?(item.to_s) }
+    elsif args.nil?
+      my_each { |item| condition = true if item }
     else
-      my_each { |item| condition = true unless item == false }
+      my_each { |item| condition = true if item == args }
     end
     condition
   end

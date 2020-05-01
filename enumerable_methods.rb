@@ -88,6 +88,7 @@ module Enumerable
 
   def my_map(proc = nil)
     return enum_for(:my_map) unless block_given? || proc
+
     new_array = []
     if proc.nil?
       to_a.my_each { |item| new_array << yield(item) }

@@ -40,10 +40,12 @@ module Enumerable
       my_each { |item| condition = false unless item.is_a?(args) }
     elsif args.is_a?(Regexp)
       my_each { |item| condition = false unless args.match?(item.to_s) }
+    elsif args.is_a?(Range)
+      my_each { |_item| condition = false unless args.include?(args) }
     elsif !args.nil?
       my_each { |item| condition = false if item != args }
     else
-      my_each { |item| condition = false unless item == true }
+      my_each { |item| condition = false unless item }
     end
     condition
   end
@@ -58,6 +60,8 @@ module Enumerable
       my_each { |item| condition = true unless item.is_a?(args) }
     elsif args.is_a?(Regexp)
       my_each { |item| condition = true unless args.match?(item.to_s) }
+    elsif args.is_a?(Range)
+      my_each { |item| condition = true unless item.include?(args) }
     elsif !args.nil?
       my_each { |item| condition = true if item != args }
     else

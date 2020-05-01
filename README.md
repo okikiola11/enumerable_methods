@@ -4,6 +4,17 @@ This project uses enumerable module that gets mixed into the Array and Hash clas
 
 ![screenshot](screenshot.png)
 
+## Methods Rebuilt
+- .each
+- .each_with_index
+- .select
+- .all?
+- .any?
+- .none?
+- .count
+- .map
+- .inject
+
 ## Built With
 
 - Ruby, VSCODE

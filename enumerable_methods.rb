@@ -28,29 +28,33 @@ module Enumerable
   end
 
   def my_all?(args = nil)
-    condition = true
     if block_given?
-      my_each { |item| condition = false if yield(item) }
+      my_each { |item| return false if yield(item) == false }
     elsif args.nil?
-      my_each { |item| condition = false if item == true }
+      my_each { |item| return false if item == true }
+    elsif args.is_a?(Class)
+      my_each { |item| return false if item.is_a?(args) }
+    elsif args.is_a?(Regexp)
+      my_each { |item| return false if args.match?(item.to_s) }
     else
-      my_each { |item| condition = false if item === args }
+      my_each { |item| return false if item != args }
     end
-    condition
+    true
   end
 
   def my_any?(args = nil)
-    condition = false
-    if args.nil?
-      my_each { |item| condition = true if yield(item) }
+    if block_given?
+      my_each { |item| return true if yield(item) }
+    elsif args.nil?
+      my_each { |item| return true if item }
     elsif args.is_a?(Class)
-      my_each { |item| condition = true if item.is_a?(args) }
+      my_each { |item| return true if item.is_a?(args) }
     elsif args.is_a?(Regexp)
-      my_each { |item| condition = true if args.match?(item.to_s) }
+      my_each { |item| return true if args.match?(item.to_s) }
     else
-      my_each { |item| condition = true if item == args }
+      my_each { |item| return true if item == args }
     end
-    condition
+    false
   end
 
   def my_none?(args = nil)

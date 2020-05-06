@@ -29,9 +29,9 @@ module Enumerable
 
   def my_all?(args = nil)
     if block_given?
-      my_each { |item| return false if yield(item) === false }
+      my_each { |item| return false unless yield(item) }
     elsif args.nil?
-      my_each { |item| return false if item == true }
+      my_each { |item| return false unless item }
     elsif args.is_a?(Class)
       my_each { |item| return false if !item.is_a?(args) }
     elsif args.is_a?(Regexp)
@@ -119,8 +119,3 @@ end
 def multiply_els(array)
   array.my_inject(:*)
 end
-
-p [1, true, 'hi', []].my_all?
-p [1,1,1].my_all?(Integer)
-p [1, 1, 1].my_all?(1) 
-p ['d','d'].my_all?(/d/)

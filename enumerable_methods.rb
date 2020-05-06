@@ -29,9 +29,9 @@ module Enumerable
 
   def my_all?(args = nil)
     if block_given?
-      my_each { |item| return false if yield(item) == false }
+      my_each { |item| return false unless yield(item) }
     elsif args.nil?
-      my_each { |item| return false if item == false }
+      my_each { |item| return false unless item }
     elsif args.is_a?(Class)
       my_each { |item| return false if !item.is_a?(args) }
     elsif args.is_a?(Regexp)

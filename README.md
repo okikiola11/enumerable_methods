@@ -44,6 +44,12 @@ To get a local copy up and running follow these simple example steps.
 - Twitter: [@Kikiolla3](https://twitter.com/Kikiolla3)
 - Linkedin: [@okikiola-apelehin](https://www.linkedin.com/in/okikiola-apelehin-459008122/)
 
+👤 **Author2**
+
+- Github: [@taiwocoker](https://github.com/taiwocoker)
+- Twitter: @SelloCoker
+- Linkedin: @taiwocoker
+- Email: taiwofcoker@gmail.com
 
 ## 🤝 Contributing
 

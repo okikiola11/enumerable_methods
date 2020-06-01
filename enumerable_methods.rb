@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ModuleLength
 module Enumerable
   def my_each
     return enum_for(:my_each) unless block_given?
@@ -27,6 +28,7 @@ module Enumerable
     result
   end
 
+  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def my_all?(args = nil)
     if block_given?
       my_each { |item| return false unless yield(item) }
@@ -72,6 +74,7 @@ module Enumerable
     end
     condition
   end
+  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
   def my_count(args = nil)
     count = 0
@@ -115,6 +118,7 @@ module Enumerable
     accumulator
   end
 end
+# rubocop:enable Metrics/ModuleLength
 
 def multiply_els(array)
   array.my_inject(:*)

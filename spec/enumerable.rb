@@ -1,8 +1,6 @@
 require_relative '../enumerable_methods.rb'
 
-
 describe Enumerable do
-  
   describe 'my_each' do
     it 'should display all numbers in the specified array' do
       expect { |num| [1, 2, 3, 4, 5].my_each(&num) }.to yield_successive_args(1, 2, 3, 4, 5)
@@ -176,6 +174,36 @@ describe Enumerable do
 
     it 'Should return an array with the block rules when block is given' do
       expect([1, 2, 3, 2].my_map { |element| element + 2 }).to eq([3, 4, 5, 4])
+    end
+  end
+
+  describe 'my_inject' do
+    it 'When block is given, it passes each element as an argument of the method in the block and stores
+    it in the memo variable, returns the result of memo at the end' do
+      expect([1, 2, 3, 2].my_inject { |memo, element| memo / element }).to eq(0)
+    end
+
+    it 'When block and an argument are given, it passes each element and the argument as an argument
+     of the method in the block and stores it in the memo variable, returns the result of memo at the end' do
+      expect([1, 2, 3, 2].my_inject { |memo, element| memo * element }).to eq(12)
+    end
+
+    it 'When block and two argument are given, it ignores the block and it passes each element and the argument
+    as an argument of the method provided in the second argument and returns the result ' do
+      expect([1, 2, 3, 2].my_inject(2, :+) { |memo, element| memo / element }).to eq(10)
+    end
+
+    it 'returns an error if invoked on object other than enumerable' do
+      expect { 1.my_inject }.to raise_error(NoMethodError)
+    end
+  end
+
+  describe '#multiply_els' do
+    it 'it takes an array and returns the multiplication of all the items' do
+      expect(multiply_els([1, 2, 3, 4])).to eql(24)
+    end
+    it 'if no argument is passed, it gives an error' do
+      expect { multiply_els }.to raise_error(ArgumentError)
     end
   end
 end

@@ -163,4 +163,19 @@ describe Enumerable do
       expect([1, 2, 3, 4].my_count(2)).to eq(1)
     end
   end
+
+  describe 'my_map' do
+    it 'Should pass each element as an argument of the
+    method in the block and returns a new array when a block is given' do
+      expect([1, 2, 3, 2].my_map { |element| element + 2 }).to eq([3, 4, 5, 4])
+    end
+
+    it 'Should raise ArgumentError when arguments are given' do
+      expect { [1, 2, 3, 2].my_map(1, :*, 2) }.to raise_error(ArgumentError)
+    end
+
+    it 'Should return an array with the block rules when block is given' do
+      expect([1, 2, 3, 2].my_map { |element| element + 2 }).to eq([3, 4, 5, 4])
+    end
+  end
 end

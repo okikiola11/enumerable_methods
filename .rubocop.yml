@@ -1,5 +1,4 @@
 AllCops:
-  TargetRubyVersion: 2.4, 2.5, 2.6, 2.7
   Exclude:
     - "README.md"
     - "Guardfile"
@@ -18,14 +17,6 @@ Metrics/ClassLength:
 Metrics/BlockLength:
   ExcludedMethods: ['describe']
   Max: 30
-Layout/EmptyLineAfterGuardClause:
-  Enabled: false
-Metrics/CyclomaticComplexity:
-  Enabled: false
-Metrics/PerceivedComplexity:
-  Enabled: false
-Metrics/ModuleLength:
-  Enabled: false
 
 
 Style/Documentation:
@@ -48,16 +39,14 @@ Layout/ExtraSpacing:
 Layout/MultilineMethodCallIndentation:
   Enabled: true
   EnforcedStyle: indented
-
-Style/HashEachMethods:
-  Enabled: true
-Style/HashTransformKeys:
-  Enabled: true
-Style/HashTransformValues:
-  Enabled: true
 Lint/RaiseException:
-  Enabled: true
+  Enabled: false
 Lint/StructNewOverride:
   Enabled: false
-Style/CaseEquality:
- Enabled: false
+Style/HashEachMethods:
+  Enabled: false
+Style/HashTransformKeys:
+  Enabled: false
+Style/HashTransformValues:
+  Enabled: false
+  
